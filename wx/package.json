@@ -1,0 +1,35 @@
+{
+	"name": "@zhq2024/wx",
+	"private": false,
+	"main": "index.js",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "rsbuild dev --open",
+		"build": "rsbuild build",
+		"up": "rsbuild build &&ssh root@xqnck.pkucy.org 'scp -r dist/* root@xqnck.pkucy.org:/usr/local/app/nginx-quic/html/wxtest",
+		"preview": "rsbuild preview"
+	},
+	"dependencies": {
+		"antd": "^5.16.1",
+		"axios": "^1.6.8",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-router-dom": "^6.22.3",
+		"weixin-js-sdk": "^1.6.5"
+	},
+	"devDependencies": {
+		"@rsbuild/core": "^0.6.13",
+		"@rsbuild/plugin-react": "^0.6.13"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
+	"bun-create": {
+		"preinstall": "echo 'Installing...'",
+		"postinstall": [
+			"echo 'Done!'"
+		],
+		"start": "bun run echo 'Hello world!'"
+	}
+}
