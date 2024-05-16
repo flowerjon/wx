@@ -2,7 +2,7 @@
 .DS_Store
 *.local
 *.log*
-
+.git
 # Dist
 node_modules
 dist/
