@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter } from "react-router-dom";
 import Routers from "./routers";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, theme, App } from "antd";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,8 +14,10 @@ root.render(
 			// 2. 组合使用暗色算法与紧凑算法
 			// algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
 		}}>
-		<HashRouter>
-			<Routers />
-		</HashRouter>
+		<App>
+			<HashRouter>
+				<Routers />
+			</HashRouter>
+		</App>
 	</ConfigProvider>
 );
