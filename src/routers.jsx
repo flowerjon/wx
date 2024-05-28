@@ -2,7 +2,7 @@ import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 import App from "./App";
 import { useCallback, useEffect } from "react";
 import { Get, Post } from "./http";
-import { Title } from "./cfg.json";
+import { Title,Desc} from "./cfg.json";
 import wx from "weixin-js-sdk";
 import { Spin } from "antd";
 
@@ -24,7 +24,7 @@ const Routers = () => {
 			wx.ready(() => {
 				wx.onMenuShareAppMessage({
 					title: Title,
-					desc: "",
+					desc: Desc,
 					link: location.href,
 					imgUrl: "https://files.pkucy.com/logo.png",
 				});
@@ -49,12 +49,13 @@ export const getUserWxInfo = () => {
 	try {
 		return JSON.parse(localStorage.getItem("wx"));
 	} catch (error) {
+		navigate("/login", { replace: true });
 		return false;
 	}
 };
 const reloadWx = () => {
-	const reloadUrl = encodeURIComponent(window.location.origin + window.location.pathname);
-	window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6c42e233208a9c52&redirect_uri=${reloadUrl}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
+	const reloadUrl = encodeURIComponent(window.location.origin + window.location.pathname + window.location.search);
+	window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6c42e233208a9c52&redirect_uri=${reloadUrl}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
 	window.localStorage.setItem("url", reloadUrl);
 };
 const Login = () => {
