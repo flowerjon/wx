@@ -54,10 +54,11 @@ export const getUserWxInfo = () => {
 	}
 };
 const reloadWx = () => {
-	const reloadUrl = encodeURIComponent(window.location.origin + window.location.pathname + window.location.search);
+	const reloadUrl = encodeURIComponent("https://xqnck.pkucy.com/oauth?redirect=" + encodeURIComponent(window.location.origin + window.location.pathname + window.location.search));
 	//判断是微信内打开的还是pc端打开的
 	const weixinUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6c42e233208a9c52&redirect_uri=${reloadUrl}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
 	const pcUrl = `https://open.weixin.qq.com/connect/qrconnect?appid=wxd9afecaeaccc7a0d&redirect_uri=${reloadUrl}&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect`;
+	console.log(window.navigator.userAgent.toLowerCase());
 	if (window.navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1) {
 		window.location.href = weixinUrl;
 	} else {
@@ -68,6 +69,7 @@ const reloadWx = () => {
 const Login = () => {
 	const from = sessionStorage.getItem("pathname") || "/";
 	const navigate = useNavigate();
+    let pc = window.navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1 ? "" : 1;
 
 	const handleLogin = useCallback(() => {
 		const code = new URLSearchParams(window.location.search).get("code");
@@ -75,7 +77,7 @@ const Login = () => {
 		if (code && !getUserWxInfo()) {
 			const url = localStorage.getItem("url");
 			if (url) {
-				Get("gettoken/" + code)
+				Get("gettoken/" + code, { pc })
 					.then((res) => {
 						if (res.Code === 0) {
 							setUserWxInfo(res.Data);
