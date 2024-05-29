@@ -2,7 +2,7 @@ import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 import App from "./App";
 import { useCallback, useEffect } from "react";
 import { Get, Post } from "./http";
-import { Title,Desc} from "./cfg.json";
+import { Title, Desc } from "./cfg.json";
 import wx from "weixin-js-sdk";
 import { Spin } from "antd";
 
@@ -55,7 +55,14 @@ export const getUserWxInfo = () => {
 };
 const reloadWx = () => {
 	const reloadUrl = encodeURIComponent(window.location.origin + window.location.pathname + window.location.search);
-	window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6c42e233208a9c52&redirect_uri=${reloadUrl}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+	//判断是微信内打开的还是pc端打开的
+	const weixinUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6c42e233208a9c52&redirect_uri=${reloadUrl}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+	const pcUrl = `https://open.weixin.qq.com/connect/qrconnect?appid=wxd9afecaeaccc7a0d&redirect_uri=${reloadUrl}&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect`;
+	if (window.navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1) {
+		window.location.href = weixinUrl;
+	} else {
+		window.location.href = pcUrl;
+	}
 	window.localStorage.setItem("url", reloadUrl);
 };
 const Login = () => {
@@ -76,14 +83,14 @@ const Login = () => {
 						}
 					})
 					.catch(() => {
-						reloadWx(window.location.origin + window.location.pathname);
+						reloadWx();
 					});
 				window.localStorage.removeItem("url");
 				return;
 			}
-			reloadWx(window.location.origin + window.location.pathname);
+			reloadWx();
 		} else {
-			reloadWx(window.location.origin + window.location.pathname);
+			reloadWx();
 		}
 	}, [navigate]);
 	useEffect(() => {
